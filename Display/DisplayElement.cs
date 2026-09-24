@@ -17,22 +17,15 @@ namespace ConsoleRPG.Display
         public ConsoleColor foregroundColour;
         public ConsoleColor backgroundColour;
 
-        public DisplayElement(string content, int zIndex, int xPos, int yPos, Anchor anchor, ConsoleColor foregroundColour = ConsoleColor.White, ConsoleColor backgroundColour = ConsoleColor.Black)
+        public DisplayElement(DisplayPixel[,] content, int zIndex, int xPos, int yPos, Anchor anchor, ConsoleColor foregroundColour = ConsoleColor.White, ConsoleColor backgroundColour = ConsoleColor.Black)
         {
-            this.content = ConvertToDisplayPixels(content); // convert provided string to displaypixels we can draw to the buffer
+            this.content = content; // convert provided string to displaypixels we can draw to the buffer
             this.zIndex = zIndex;
             this.xPos = xPos;
             this.yPos = yPos;
             this.anchor = anchor;
             this.foregroundColour = foregroundColour;
             this.backgroundColour = backgroundColour;
-        }
-
-        protected virtual DisplayPixel[,] ConvertToDisplayPixels(string stringInput)
-        {
-            // !!!!!!!!! get the conversion werking !!!!!!!!!!!
-            DisplayPixel[,] output = new DisplayPixel[2, 3];
-            return output;
         }
 
         // ConvertToDisplayPixels(content)
@@ -56,14 +49,19 @@ namespace ConsoleRPG.Display
         }
     }
 
-    class TextBox(DisplayPixel[,] content, int zIndex, int xPos, int yPos, int xScale, int yScale, char border, char fill, Anchor anchor, ConsoleColor foregroundColour, ConsoleColor backgroundColour) : DisplayElement(content, zIndex, xPos, yPos, anchor, foregroundColour, backgroundColour)
+    class TextBox(string content, int zIndex, int xPos, int yPos, int xScale, int yScale, char border, char fill, Anchor anchor, ConsoleColor foregroundColour, ConsoleColor backgroundColour) : DisplayElement(ConvertToDisplayPixels(content), zIndex, xPos, yPos, anchor, foregroundColour, backgroundColour)
     {
         public int xScale = xScale;
         public int yScale = yScale;
         public char border = border;
         public char fill = fill;
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! make this do the conversion instead and pass the displaypixel grid to the base class !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        private static DisplayPixel[,] ConvertToDisplayPixels(string elementContent) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
+        {
+            // !!!!!!!!! get the conversion werking !!!!!!!!!!!
+            DisplayPixel[,] output = new DisplayPixel[2, 3];
+            return output;
+        }
     }
 
     // sprites, backgrounds, overlays, menus, etc
