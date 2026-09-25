@@ -19,7 +19,7 @@ namespace ConsoleRPG.Display
 
         public DisplayElement(DisplayPixel[,] content, int zIndex, int xPos, int yPos, Anchor anchor, ConsoleColor foregroundColour = ConsoleColor.White, ConsoleColor backgroundColour = ConsoleColor.Black)
         {
-            this.content = content; // convert provided string to displaypixels we can draw to the buffer
+            this.content = content;
             this.zIndex = zIndex;
             this.xPos = xPos;
             this.yPos = yPos;
@@ -58,8 +58,9 @@ namespace ConsoleRPG.Display
 
         private static DisplayPixel[,] ConvertToDisplayPixels(string elementContent) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
         {
+            // need a way to get the display or dimensions of the buffer here...
             // !!!!!!!!! get the conversion werking !!!!!!!!!!!
-            DisplayPixel[,] output = new DisplayPixel[2, 3];
+            DisplayPixel[,] output = new DisplayPixel[2, 3]; // dont use 2x3 grid, must match dimensions of buffer or will crash
             return output;
         }
     }
