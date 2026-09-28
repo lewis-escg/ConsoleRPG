@@ -9,7 +9,7 @@ namespace ConsoleRPG.Display
     class Display(int width, int height)
     {
         public int Width = width;
-        public int Height = height; // !!!!!!!! swap out the height/width below for our variables !!!!!!!!!
+        public int Height = height; // swap out the height/width below for the variables rather than parameters somehow
         public DisplayPixel[,] buffer = new DisplayPixel[height, width]; // buffer where we composite the elements together
         private List<DisplayElement> elements = new(); // list of elements (ordered & overlayed by zindex)
 
@@ -35,6 +35,44 @@ namespace ConsoleRPG.Display
                 element.Draw(this);
             }
         }
+
+        // utilities
+        public string PadCenter(string inputString, int fullLength)
+        {
+            int padding = fullLength - inputString.Length;
+            int leftPadding = padding / 2 + inputString.Length;
+            string output = inputString.PadLeft(leftPadding);
+            output = output.PadRight(fullLength);
+            return output;
+        }
+
+
+
+        public string[] PadUp(string[] inputStringRows, int fullHeight)
+        {
+            int rowLength = inputStringRows[0].Length;
+            string[] output = inputStringRows;
+            output.Prepend(string.Concat(Enumerable.Repeat(" ", rowLength)));
+            return output;
+        }
+
+        public string[] PadDown(string[] inputStringRows, int fullHeight)
+        {
+            int rowLength = inputStringRows[0].Length;
+            string[] output = inputStringRows;
+            output.Append(string.Concat(Enumerable.Repeat(" ", rowLength)));
+            return output;
+        }
+
+        public string[] PadCenter_v(string[] inputStringRows, int fullHeight)
+        {
+            int padding = fullHeight - inputStringRows.Length;
+            int leftPadding = padding / 2 + inputStringRows.Length;
+            string[] output = this.PadUp(inputStringRows, leftPadding);
+            output = this.PadDown(output, fullHeight);
+            return output;
+        }
+
     }
 
     // enums, structure types, etc
