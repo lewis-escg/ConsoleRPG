@@ -49,16 +49,29 @@ namespace ConsoleRPG.Display
             }
             
         }
+
+        public static DisplayPixel CharacterToDisplayPixel(char character, int zIndex)
+        {
+            DisplayPixel result = new();
+            result.character = character;
+            result.isEmpty = false;
+            result.zIndex = zIndex;
+
+            return result;
+        }
     }
 
     class TextBox(Display display, string content, int zIndex, int xPos, int yPos, int xScale, int yScale, char border, char fill, Anchor anchor, ConsoleColor foregroundColour, ConsoleColor backgroundColour) : DisplayElement(ConvertToDisplayPixels(content, anchor, display), zIndex, xPos, yPos, anchor, foregroundColour, backgroundColour)
     {
+
+        // considering getting rid of foreground/background colours for simplicity (cant have coloured strings so there's no colour data in the first place)
+
         public int xScale = xScale;
         public int yScale = yScale;
         public char border = border;
         public char fill = fill;
 
-        private static DisplayPixel[,] ConvertToDisplayPixels(string elementContent, Anchor anchor, Display display) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
+        private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string elementContent, Anchor anchor, int zIndex) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
         {
             char[,] elementCharacterArray = new char[display.Height, display.Width];
             string[] elementContentRows = elementContent.Split("\n");
@@ -69,6 +82,7 @@ namespace ConsoleRPG.Display
                 elementContentRows.Take(display.Height);
             }
 
+            // for each row
             for (int i = 0; i <= elementContentRows.Length; i++)
             {
                 // cut off the string if too long to display
@@ -106,20 +120,22 @@ namespace ConsoleRPG.Display
                 elementContentRows = display.PadUp(elementContentRows, display.Height);
             }
 
-            for(int y = 0; y <= display.Height; y++)
-            {
-                // convert to characters and add to 2d array
-                char[] charArray = elementContentRows[y].ToCharArray();
-                for (int x = 0; x <= display.Width; x++)
-                {
-                    elementCharacterArray[y, x] = charArray[x];
-                }
-            }
-
             // !!!!!!!!! get the conversion werking !!!!!!!!!!!
             DisplayPixel[,] output = new DisplayPixel[display.Height, display.Width]; // must match dimensions of buffer or will crash
 
             // convert the elementCharacterArray into the array of displayPixels ^
+            // for each row
+            for (int y = 0; y <= display.Height; y++)
+            {
+                // convert to characters and add to 2d array
+                char[] charArray = elementContentRows[y].ToCharArray();
+                // for each pixel in the row
+                for (int x = 0; x <= display.Width; x++)
+                {
+                    // add the row of characters to the output array
+                    output[y, x] = CharacterToDisplayPixel(charArray[x], zIndex);
+                }
+            }
 
             return output;
         }
