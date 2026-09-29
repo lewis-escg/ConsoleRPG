@@ -73,7 +73,6 @@ namespace ConsoleRPG.Display
 
         private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string elementContent, Anchor anchor, int zIndex) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
         {
-            char[,] elementCharacterArray = new char[display.Height, display.Width];
             string[] elementContentRows = elementContent.Split("\n");
 
             // cut off extra rows if too many to display
