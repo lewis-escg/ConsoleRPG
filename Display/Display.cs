@@ -6,12 +6,42 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG.Display
 {
-    class Display(int width, int height)
+    public class Display(int width, int height)
     {
         public int Width = width;
         public int Height = height; // swap out the height/width below for the variables rather than parameters somehow
         public DisplayPixel[,] buffer = new DisplayPixel[height, width]; // buffer where we composite the elements together
         private List<DisplayElement> elements = new(); // list of elements (ordered & overlayed by zindex)
+
+        public void Draw()
+        {
+            foreach (DisplayElement element in elements) // for every element
+            {
+                element.Draw(this); // call its draw method
+            }
+
+            // for every row in the buffer
+            for (int y = 0; y < Height; y++)
+            {
+                // for every pixel in the row
+                for (int x = 0; x < Width; x++)
+                {
+                    // get pixel
+                    DisplayPixel pixel = buffer[y, x];
+
+                    if (pixel.isEmpty == false) // if not empty
+                    {
+                        Console.Write(pixel.character); // writes character to console
+                    }
+                    else // if empty
+                    {
+                        Console.Write(' '); // writes empty space
+                    }
+                }
+
+                Console.WriteLine(); // new line after each row
+            }
+        }
 
         public void Add(DisplayElement element)
         {
@@ -26,14 +56,6 @@ namespace ConsoleRPG.Display
         public void ClearBuffer()
         {
             buffer = new DisplayPixel[Height, width];
-        }
-
-        public void Draw()
-        {
-            foreach (DisplayElement element in elements)
-            {
-                element.Draw(this);
-            }
         }
 
         // utilities
@@ -77,7 +99,7 @@ namespace ConsoleRPG.Display
 
     // enums, structure types, etc
 
-    enum Anchor // anchor points for positioning elements
+    public enum Anchor // anchor points for positioning elements
     {
         TopLeft,
         Top,
@@ -89,13 +111,12 @@ namespace ConsoleRPG.Display
         Bottom,
         BottomRight
     }
-    struct DisplayPixel(char character = ' ', int zIndex = 0, bool isEmpty = true, ConsoleColor foregroundColour = ConsoleColor.White, ConsoleColor backgroundColour = ConsoleColor.Black)
+
+    // a structure to store data for indivdual pixels when drawing to the buffer
+    public struct DisplayPixel(char character = ' ', int zIndex = 0, bool isEmpty = true)
     {
         public char character = character;
         public int zIndex = zIndex;
         public bool isEmpty = isEmpty;
-        public ConsoleColor foregroundColour = foregroundColour;
-        public ConsoleColor backgroundColour = backgroundColour;
-        
     }
 }

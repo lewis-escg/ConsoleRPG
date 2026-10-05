@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleRPG.Display;
 
 namespace ConsoleRPG.Game
 {
-    class GameLoop(int loopsPerSecond)
+    class GameLoop(int loopsPerSecond, ConsoleRPG.Display.Display display)
     {
         private int loopsPerSecond = loopsPerSecond;
         private bool running = false;
@@ -15,17 +16,23 @@ namespace ConsoleRPG.Game
 
         public void Begin()
         {
-            if (running) return; // don't let us call begin if the loop is already running
+            string newDisplayElementContent = "#                                                             #\n#                                                             #\n#                                                             #\n#                                                             #";
+            TextBox newElement = new(display, newDisplayElementContent, 5, 0, 0, 1, 1, '#', ' ', Anchor.Center);
 
+
+            if (running == true) return; // don't let us call begin if the loop is already running
             running = true;
-
             while (running) // stop if no longer running (set false by End method)
             {
                 if (!paused) // only run code if the loop isnt paused, otherwise keep waiting until unpaused
                 {
-                    //update
+                    // update
+                    // will probably have a list of classes in the game which need to be updated. this loop will call all of those methods.
+                    // could also have a way of the classes listening for a signal from the game loop (unless that's not possible without using a module/library thing).
                     
                     Console.WriteLine("Update!");
+                    display.Add(newElement);
+                    display.Draw();
                 }
                 Thread.Sleep(1000 / loopsPerSecond); // wait until next loop
             }
