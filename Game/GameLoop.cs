@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ConsoleRPG.Display;
 
@@ -12,12 +10,11 @@ namespace ConsoleRPG.Game
         private int loopsPerSecond = loopsPerSecond;
         private bool running = false;
         private bool paused = false;
-        private Thread? thread;
 
         public void Begin()
         {
-            string newDisplayElementContent = "#                                                             #\n#                                                             #\n#                                                             #\n#                                                             #";
-            TextBox newElement = new(display, newDisplayElementContent, 5, 0, 0, 1, 1, '#', ' ', Anchor.Center);
+            string newDisplayElementContent = "abcdefg";
+            TextBox newElement = new(display, newDisplayElementContent, 5, 0, 0, 1, 1, '█', ' ', Anchor.Center);
 
 
             if (running == true) return; // don't let us call begin if the loop is already running
@@ -29,12 +26,12 @@ namespace ConsoleRPG.Game
                     // update
                     // will probably have a list of classes in the game which need to be updated. this loop will call all of those methods.
                     // could also have a way of the classes listening for a signal from the game loop (unless that's not possible without using a module/library thing).
-                    
+
                     Console.WriteLine("Update!");
                     display.Add(newElement);
                     display.Draw();
                 }
-                Thread.Sleep(1000 / loopsPerSecond); // wait until next loop
+                System.Threading.Thread.Sleep(1000 / loopsPerSecond); // wait until next loop
             }
         }
 

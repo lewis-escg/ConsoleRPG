@@ -16,8 +16,6 @@ namespace ConsoleRPG.Display
         public int xPos;
         public int yPos;
         public Anchor anchor;
-        public ConsoleColor foregroundColour;
-        public ConsoleColor backgroundColour;
 
         public DisplayElement(DisplayPixel[,] content, int zIndex, int xPos, int yPos, Anchor anchor)
         {
@@ -26,8 +24,6 @@ namespace ConsoleRPG.Display
             this.xPos = xPos;
             this.yPos = yPos;
             this.anchor = anchor;
-            this.foregroundColour = foregroundColour;
-            this.backgroundColour = backgroundColour;
         }
 
         // ConvertToDisplayPixels(content)
@@ -47,7 +43,7 @@ namespace ConsoleRPG.Display
                     }
                 }
             }
-            
+
         }
 
         public static DisplayPixel CharacterToDisplayPixel(char character, int zIndex)
@@ -61,7 +57,7 @@ namespace ConsoleRPG.Display
         }
     }
 
-    class TextBox(Display display, string content, int zIndex, int xPos, int yPos, int xScale, int yScale, char border, char fill, Anchor anchor) : DisplayElement(ConvertToDisplayPixels(display, content, anchor, zIndex), zIndex, xPos, yPos, anchor)
+    class TextBox(Display display, string content, int zIndex, int xPos, int yPos, int xScale, int yScale, char border, char fill, Anchor anchor) : DisplayElement(ConvertToDisplayPixels(display, content, anchor, zIndex, border, fill), zIndex, xPos, yPos, anchor)
     {
 
         // considering getting rid of foreground/background colours for simplicity (cant have coloured strings so there's no colour data in the first place)
@@ -71,18 +67,56 @@ namespace ConsoleRPG.Display
         public char border = border;
         public char fill = fill;
 
-        private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string elementContent, Anchor anchor, int zIndex) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
+        private static string[] FormatContents(int linesNumber, int widthNumber, string userTypedText, char border = '█', char fill = '_')
         {
-            // need a thing to convert a simple string into the formatted stuff we need (word wrapped, padded, border and fill)
+
+            string[] rows = new string[linesNumber];
+
+            for (int i = 0; i < linesNumber; i++) // for each line
+            {
+                if ((i == 0) || (i == linesNumber - 1)) // if the current line is the first or last line (border)
+                {
+                    string newLine = ("".PadLeft((widthNumber), border)); // fill the line with border characters
+                    if (i != linesNumber - 1)
+                    {
+                        newLine = ($"{newLine}\n"); // add a new line signifier thing on the end (except if its the last line, so we dont exceed the line limit)
+                    }
+                    rows[i] = newLine; // add to final array
+                }
+                else
+                {
+                    string textForThisLine = "";
+                    if (userTypedText.Length == 0)  // basic character wrapping (not word wrapping) - don't add any text if there is none
+                    {
+                        // pass
+                    }
+                    else if (userTypedText.Length <= widthNumber - 4) // if the remaining text can all fit on the same line
+                    {
+                        textForThisLine = userTypedText;
+                        userTypedText = "";
+                    }
+                    else // if there's more text that exceeds the length of the current line
+                    {
+                        textForThisLine = userTypedText.Substring(0, widthNumber - 4); // get the string from the beginning of the text up to the end of the line
+                        userTypedText = userTypedText.Substring(widthNumber - 4); // cut off the string we just took
+                    }
+
+                    string newLine = (textForThisLine.PadRight(widthNumber - 4, fill)); // pad text to the left (the rest of the line is the fill character)
+                    newLine = ($"{border} {newLine} {border}\n"); // add borders to sides with text in the center
+                    rows[i] = newLine; // add to final array
+                }
+            }
+
+            return rows;
+
+        }
 
 
+        private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string elementContent, Anchor anchor, int zIndex, char border, char fill) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
+        {
+            // FORMATTING
 
-
-
-
-
-
-            string[] elementContentRows = elementContent.Split("\n");
+            string[] elementContentRows = FormatContents(display.Height, display.Width, elementContent, border, fill);
 
             // cut off extra rows if too many to display
             if (elementContentRows.Length > display.Height)
