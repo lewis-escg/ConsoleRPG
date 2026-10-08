@@ -15,10 +15,14 @@ namespace ConsoleRPG.Display
 
         public void Draw()
         {
+            ClearBuffer();
+
             foreach (DisplayElement element in elements) // for every element
             {
                 element.Draw(this); // call its draw method
             }
+
+            StringBuilder renderedFrame = new();
 
             // for every row in the buffer
             for (int y = 0; y < Height; y++)
@@ -31,16 +35,18 @@ namespace ConsoleRPG.Display
 
                     if (pixel.isEmpty == false) // if not empty
                     {
-                        Console.Write(pixel.character); // writes character to console
+                        renderedFrame.Append(pixel.character); // writes character to console
                     }
                     else // if empty
                     {
-                        Console.Write(' '); // writes empty space
+                        renderedFrame.Append(' '); // writes empty space
                     }
                 }
 
-                Console.WriteLine(); // new line after each row
+                renderedFrame.Append(System.Environment.NewLine); // new line after each row
             }
+            Console.Write(renderedFrame); // output frame to console
+            Console.Write("\x1b[J"); // clear anything from cursor pos to end of console (prevents some visual bugs after window size is set smaller than the game can display)
         }
 
         public void Add(DisplayElement element)
@@ -55,7 +61,15 @@ namespace ConsoleRPG.Display
 
         public void ClearBuffer()
         {
-            buffer = new DisplayPixel[Height, width];
+            buffer = new DisplayPixel[Height, Width];
+
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    buffer[y, x].isEmpty = true; // set every initial pixel to empty since arrays dont want to use default values from the constructor
+                }
+            }
         }
 
         // utilities
@@ -70,29 +84,37 @@ namespace ConsoleRPG.Display
 
 
 
-        public string[] PadUp(string[] inputStringRows, int fullHeight)
+        public string[] PadUp(string[] inputStringRows, int fullHeight) // REWRITE!
         {
             int rowLength = inputStringRows[0].Length;
-            string[] output = inputStringRows;
-            output.Prepend(string.Concat(Enumerable.Repeat(" ", rowLength)));
-            return output;
+            int rowsNeeded = fullHeight - inputStringRows.Length;
+
+            string emptyRow = new string(' ', rowLength);
+
+            return Enumerable.Repeat(emptyRow, rowsNeeded).Concat(inputStringRows).ToArray();
         }
 
-        public string[] PadDown(string[] inputStringRows, int fullHeight)
+        public string[] PadDown(string[] inputStringRows, int fullHeight) // REWRITE!
         {
             int rowLength = inputStringRows[0].Length;
-            string[] output = inputStringRows;
-            output.Append(string.Concat(Enumerable.Repeat(" ", rowLength)));
-            return output;
+            int rowsNeeded = fullHeight - inputStringRows.Length;
+
+            string emptyRow = new string(' ', rowLength);
+
+            return inputStringRows.Concat(Enumerable.Repeat(emptyRow, rowsNeeded)).ToArray();
         }
 
-        public string[] PadCenter_v(string[] inputStringRows, int fullHeight)
+        public string[] PadCenter_v(string[] inputStringRows, int fullHeight) // REWRITE!
         {
-            int padding = fullHeight - inputStringRows.Length;
-            int leftPadding = padding / 2 + inputStringRows.Length;
-            string[] output = this.PadUp(inputStringRows, leftPadding);
-            output = this.PadDown(output, fullHeight);
-            return output;
+            int rowsNeeded = fullHeight - inputStringRows.Length;
+
+            int topRows = (rowsNeeded + 1) / 2;
+            int bottomRows = rowsNeeded / 2;
+
+            int rowLength = inputStringRows[0].Length;
+            string emptyRow = new string(' ', rowLength);
+
+            return Enumerable.Repeat(emptyRow, topRows).Concat(inputStringRows).Concat(Enumerable.Repeat(emptyRow, bottomRows)).ToArray();
         }
 
     }

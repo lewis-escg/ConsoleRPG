@@ -1,0 +1,4 @@
+- fix textboxes so that they use their scale parameters rather than the display dimensions
+- allow displayelements to use their posX and posY parameters for offsets
+- use a niche character as a 'empty' signifier rather than space (introduces weird behaviour when spaces aren't supposed to be empty)
+  ^ make sure this signifier stuff all plays nice (e.g. textbox properly appears on top of other elements, that means with its blank space inside not being overwritten)

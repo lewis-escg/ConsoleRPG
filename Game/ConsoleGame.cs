@@ -11,6 +11,8 @@ namespace ConsoleRPG.Game
             const int DISPLAY_WIDTH = 60;
             const int DISPLAY_HEIGHT = 24;
 
+            Console.CursorVisible = false; // hide the cursor (can be seen whizzing around when frames are drawn)
+
             ConsoleRPG.Display.Display newDisplay = new(DISPLAY_WIDTH, DISPLAY_HEIGHT);
             GameLoop gameLoop = new(5, newDisplay);
             gameLoop.Begin();
