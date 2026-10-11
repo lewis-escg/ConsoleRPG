@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG.Display
 {
-    class TextBox(Display display, string content, int zIndex, int xPos, int yPos, int xScale, int yScale, char border, char fill, Anchor anchor) : DisplayElement(ConvertToDisplayPixels(display, FormatContents(display.Height, display.Width, content, border, fill), anchor, zIndex, border, fill), zIndex, xPos, yPos, anchor)
+    class TextBox(Display display, string content, int zIndex, int xPos, int yPos, int xScale, int yScale, char border, char fill, Anchor anchor) : DisplayElement(ConvertToDisplayPixels(display, FormatContents(display, yScale, xScale, content, border, fill), anchor, xPos, yPos, xScale, yScale, zIndex, border, fill), zIndex, xPos, yPos, anchor)
     {
 
         public int xScale = xScale;
@@ -14,9 +14,9 @@ namespace ConsoleRPG.Display
         public char border = border;
         public char fill = fill;
 
-        private static string[] FormatContents(int linesNumber, int widthNumber, string userTypedText, char border = '█', char fill = '_')
+        private static string[] FormatContents(Display display, int linesNumber, int widthNumber, string userTypedText, char border = '█', char fill = ' ')
         {
-
+            userTypedText = userTypedText.Replace(' ', fill); // replace spaces with the fill character (since we only want the words, not the spaces. it's not ascii art. yk what i mean.)
             string[] rows = new string[linesNumber];
 
             for (int i = 0; i < linesNumber; i++) // for each line
@@ -24,10 +24,6 @@ namespace ConsoleRPG.Display
                 if ((i == 0) || (i == linesNumber - 1)) // if the current line is the first or last line (border)
                 {
                     string newLine = ("".PadLeft((widthNumber), border)); // fill the line with border characters
-                    if (i != linesNumber - 1)
-                    {
-                        newLine = ($"{newLine}\n"); // add a new line signifier thing on the end (except if its the last line, so we dont exceed the line limit)
-                    }
                     rows[i] = newLine; // add to final array
                 }
                 else
@@ -49,7 +45,7 @@ namespace ConsoleRPG.Display
                     }
 
                     string newLine = (textForThisLine.PadRight(widthNumber - 4, fill)); // pad text to the left (the rest of the line is the fill character)
-                    newLine = ($"{border} {newLine} {border}\n"); // add borders to sides with text in the center
+                    newLine = ($"{border}{fill}{newLine}{fill}{border}"); // add borders to sides with text in the center
                     rows[i] = newLine; // add to final array
                 }
             }
@@ -58,7 +54,7 @@ namespace ConsoleRPG.Display
 
         }
 
-        private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string[] elementContentRows, Anchor anchor, int zIndex, char border, char fill) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
+        private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string[] elementContentRows, Anchor anchor, int xPos, int yPos, int xScale, int yScale, int zIndex, char border, char fill) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
         {
 
             // !!!!!!!!! REWRITE TO USE SCALE PARAMS INSTEAD OF FULL DISPLAY SIZE !!!!!!!!!!!!!!!!!!!!!
@@ -69,8 +65,6 @@ namespace ConsoleRPG.Display
                 elementContentRows = elementContentRows.Take(display.Height).ToArray(); // keeps only the rows up to the height we need
             }
 
-            int imageWidth = Math.Min(elementContentRows.Max(row => row.Length), display.Width); // get max length
-
             // for each row
             for (int i = 0; i < elementContentRows.Length; i++)
             {
@@ -80,36 +74,36 @@ namespace ConsoleRPG.Display
                     elementContentRows[i] = elementContentRows[i].Substring(0, display.Width); // keeps only the string up to the width we need
                 }
 
-                elementContentRows[i] = elementContentRows[i].PadRight(imageWidth); // make every row the same width
+                elementContentRows[i] = elementContentRows[i].PadRight(xScale, display.Empty); // make every row the same width, prevents them shifting around whether they're odd or even.
 
                 // pad the row to the left, middle or right according to the anchor setting
                 if (anchor == Anchor.Center || anchor == Anchor.Top || anchor == Anchor.Bottom)
                 {
-                    int leftPadding = (display.Width - imageWidth) / 2;
-                    elementContentRows[i] = elementContentRows[i].PadLeft(imageWidth + leftPadding).PadRight(display.Width);
+                    int leftPadding = (display.Width - xScale) / 2;
+                    elementContentRows[i] = elementContentRows[i].PadLeft(xScale + leftPadding, display.Empty).PadRight(display.Width, display.Empty);
                 }
                 else if (anchor == Anchor.Left || anchor == Anchor.TopLeft || anchor == Anchor.BottomLeft)
                 {
-                    elementContentRows[i] = elementContentRows[i].PadRight(display.Width);
+                    elementContentRows[i] = elementContentRows[i].PadRight(display.Width, display.Empty);
                 }
                 else if (anchor == Anchor.Right || anchor == Anchor.TopRight || anchor == Anchor.BottomRight)
                 {
-                    elementContentRows[i] = elementContentRows[i].PadLeft(display.Width);
+                    elementContentRows[i] = elementContentRows[i].PadLeft(display.Width, display.Empty);
                 }
             }
 
             // pad rows to the bottom, middle or top according to the anchor setting
             if (anchor == Anchor.Top || anchor == Anchor.TopLeft || anchor == Anchor.TopRight)
             {
-                elementContentRows = display.PadDown(elementContentRows, display.Height);
+                elementContentRows = display.PadDown(elementContentRows, display.Height, display.Empty);
             }
             else if (anchor == Anchor.Center || anchor == Anchor.Left || anchor == Anchor.Right)
             {
-                elementContentRows = display.PadCenter_v(elementContentRows, display.Height);
+                elementContentRows = display.PadCenter_v(elementContentRows, display.Height, display.Empty);
             }
             else if (anchor == Anchor.Bottom || anchor == Anchor.BottomLeft || anchor == Anchor.BottomRight)
             {
-                elementContentRows = display.PadUp(elementContentRows, display.Height);
+                elementContentRows = display.PadUp(elementContentRows, display.Height, display.Empty);
             }
 
             DisplayPixel[,] output = new DisplayPixel[display.Height, display.Width]; // must match dimensions of buffer or will crash
@@ -124,8 +118,20 @@ namespace ConsoleRPG.Display
                 // for each pixel in the row
                 for (int x = 0; x < display.Width; x++)
                 {
-                    // add the row of characters to the output array
-                    output[y, x] = CharacterToDisplayPixel(charArray[x], zIndex);
+
+                    int xTarget = x + xPos;
+                    int yTarget = y + yPos;
+
+                    // ignore characters outside the display
+                    if (xTarget >= 0 && xTarget < display.Width && yTarget >= 0 && yTarget < display.Height)
+                    {
+                        // make sure character isnt the empty character (avoid padding issues)
+                        if (charArray[x] != display.Empty)
+                        {
+                            // add the row of characters to the output array
+                            output[yTarget, xTarget] = CharacterToDisplayPixel(charArray[x], zIndex);
+                        }
+                    }
                 }
             }
 

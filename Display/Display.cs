@@ -8,6 +8,7 @@ namespace ConsoleRPG.Display
 {
     public class Display(int width, int height)
     {
+        public char Empty = '#'; // ¶
         public int Width = width;
         public int Height = height; // swap out the height/width below for the variables rather than parameters somehow
         public DisplayPixel[,] buffer = new DisplayPixel[height, width]; // buffer where we composite the elements together
@@ -15,7 +16,8 @@ namespace ConsoleRPG.Display
 
         public void Draw()
         {
-            ClearBuffer();
+            Console.SetCursorPosition(0, 0); // reset the cursor to overwrite anything previously shown in the console (overwrites previous 'frames' without the flicker when clearing the console)
+            ClearBuffer(); // clear the buffer (prevent images from previous frames showing through)
 
             foreach (DisplayElement element in elements) // for every element
             {
@@ -39,7 +41,7 @@ namespace ConsoleRPG.Display
                     }
                     else // if empty
                     {
-                        renderedFrame.Append(' '); // writes empty space
+                        renderedFrame.Append(' '); // writes empty space (not using empty-representative symbol here because we're directly writing characters to the buffer)
                     }
                 }
 
@@ -73,38 +75,38 @@ namespace ConsoleRPG.Display
         }
 
         // utilities
-        public string PadCenter(string inputString, int fullLength)
+        public string PadCenter(string inputString, int fullLength, char character)
         {
             int padding = fullLength - inputString.Length;
             int leftPadding = padding / 2 + inputString.Length;
-            string output = inputString.PadLeft(leftPadding);
+            string output = inputString.PadLeft(leftPadding, character);
             output = output.PadRight(fullLength);
             return output;
         }
 
 
 
-        public string[] PadUp(string[] inputStringRows, int fullHeight) // REWRITE!
+        public string[] PadUp(string[] inputStringRows, int fullHeight, char character) // REWRITE!
         {
             int rowLength = inputStringRows[0].Length;
             int rowsNeeded = fullHeight - inputStringRows.Length;
 
-            string emptyRow = new string(' ', rowLength);
+            string emptyRow = new string(character, rowLength);
 
             return Enumerable.Repeat(emptyRow, rowsNeeded).Concat(inputStringRows).ToArray();
         }
 
-        public string[] PadDown(string[] inputStringRows, int fullHeight) // REWRITE!
+        public string[] PadDown(string[] inputStringRows, int fullHeight, char character) // REWRITE!
         {
             int rowLength = inputStringRows[0].Length;
             int rowsNeeded = fullHeight - inputStringRows.Length;
 
-            string emptyRow = new string(' ', rowLength);
+            string emptyRow = new string(character, rowLength);
 
             return inputStringRows.Concat(Enumerable.Repeat(emptyRow, rowsNeeded)).ToArray();
         }
 
-        public string[] PadCenter_v(string[] inputStringRows, int fullHeight) // REWRITE!
+        public string[] PadCenter_v(string[] inputStringRows, int fullHeight, char character) // REWRITE!
         {
             int rowsNeeded = fullHeight - inputStringRows.Length;
 
@@ -112,7 +114,7 @@ namespace ConsoleRPG.Display
             int bottomRows = rowsNeeded / 2;
 
             int rowLength = inputStringRows[0].Length;
-            string emptyRow = new string(' ', rowLength);
+            string emptyRow = new string(character, rowLength);
 
             return Enumerable.Repeat(emptyRow, topRows).Concat(inputStringRows).Concat(Enumerable.Repeat(emptyRow, bottomRows)).ToArray();
         }
@@ -135,7 +137,7 @@ namespace ConsoleRPG.Display
     }
 
     // a structure to store data for indivdual pixels when drawing to the buffer
-    public struct DisplayPixel(char character = ' ', int zIndex = 0, bool isEmpty = true)
+    public struct DisplayPixel(char character = '#', int zIndex = 0, bool isEmpty = true)
     {
         public char character = character;
         public int zIndex = zIndex;

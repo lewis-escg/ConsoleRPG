@@ -53,10 +53,9 @@ namespace ConsoleRPG.Display
             result.character = character;
             result.zIndex = zIndex;
 
-            if (character == ' ')
+            if (character == '¶')
             {
                 result.isEmpty = true;
-
             }
             else
             {

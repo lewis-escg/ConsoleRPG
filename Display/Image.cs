@@ -42,36 +42,36 @@ namespace ConsoleRPG.Display
                     elementContentRows[i] = elementContentRows[i].Substring(0, display.Width); // keeps only the string up to the width we need
                 }
 
-                elementContentRows[i] = elementContentRows[i].PadRight(imageWidth); // make every row the same width
+                elementContentRows[i] = elementContentRows[i].PadRight(imageWidth, display.Empty); // make every row the same width
 
                 // pad the row to the left, middle or right according to the anchor setting
                 if (anchor == Anchor.Center || anchor == Anchor.Top || anchor == Anchor.Bottom)
                 {
                     int leftPadding = (display.Width - imageWidth) / 2;
-                    elementContentRows[i] = elementContentRows[i].PadLeft(imageWidth + leftPadding).PadRight(display.Width);
+                    elementContentRows[i] = elementContentRows[i].PadLeft(imageWidth + leftPadding).PadRight(display.Width, display.Empty);
                 }
                 else if (anchor == Anchor.Left || anchor == Anchor.TopLeft || anchor == Anchor.BottomLeft)
                 {
-                    elementContentRows[i] = elementContentRows[i].PadRight(display.Width);
+                    elementContentRows[i] = elementContentRows[i].PadRight(display.Width, display.Empty);
                 }
                 else if (anchor == Anchor.Right || anchor == Anchor.TopRight || anchor == Anchor.BottomRight)
                 {
-                    elementContentRows[i] = elementContentRows[i].PadLeft(display.Width);
+                    elementContentRows[i] = elementContentRows[i].PadLeft(display.Width, display.Empty);
                 }
             }
 
             // pad rows to the bottom, middle or top according to the anchor setting
             if (anchor == Anchor.Top || anchor == Anchor.TopLeft || anchor == Anchor.TopRight)
             {
-                elementContentRows = display.PadDown(elementContentRows, display.Height);
+                elementContentRows = display.PadDown(elementContentRows, display.Height, display.Empty);
             }
             else if (anchor == Anchor.Center || anchor == Anchor.Left || anchor == Anchor.Right)
             {
-                elementContentRows = display.PadCenter_v(elementContentRows, display.Height);
+                elementContentRows = display.PadCenter_v(elementContentRows, display.Height, display.Empty);
             }
             else if (anchor == Anchor.Bottom || anchor == Anchor.BottomLeft || anchor == Anchor.BottomRight)
             {
-                elementContentRows = display.PadUp(elementContentRows, display.Height);
+                elementContentRows = display.PadUp(elementContentRows, display.Height, display.Empty);
             }
 
             DisplayPixel[,] output = new DisplayPixel[display.Height, display.Width]; // must match dimensions of buffer or will crash

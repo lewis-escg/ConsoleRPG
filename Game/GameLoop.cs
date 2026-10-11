@@ -17,11 +17,11 @@ namespace ConsoleRPG.Game
 
 
 
-            TextBox newElement = new(display, "from here on out, you're big boss.", 5, 0, 0, 1, 1, '█', ' ', Anchor.Center); // TEST ELEMENT EXAMPLE
+            TextBox newElement = new(display, "from here on out, you're big boss.", 5, 3, 0, 33, 12, '█', ' ', Anchor.TopLeft); // TEST ELEMENT EXAMPLE
 
             string testimage = "▄▄▄         ▄▄▄\r\n█ ██ ▄█▀█▄ ██ █\r\n█  █ █   █ █  █\r\n█  ▀██▄ ▄██▀  █\r\n▀█░░░░░░░░░░░█▀\r\n █░░░░░░░░░░░█\r\n ▀██░░░░░░░██▀\r\n   ▄█▓▓▓▓▓█▄\r\n  ▄█▓▓▓▓▓▓▓█▄\r\n  █▓▓█████▓▓█\r\n █▓▓█▀   ▀█▓▓█\r\n █▓█       █▓█\r\n ▀█         █▀";
 
-            Image newImage = new(display, testimage, 20, 0, 0, Anchor.Center);
+            Image newImage = new(display, testimage, 4, 0, 0, Anchor.Center);
 
             display.Add(newElement);
             display.Add(newImage);
@@ -34,8 +34,6 @@ namespace ConsoleRPG.Game
             {
                 if (!paused) // only run code if the loop isnt paused, otherwise keep waiting until unpaused
                 {
-                    // reset the cursor to overwrite anything previously shown in the console (overwrites previous 'frames' without the flicker when clearing the console)
-                    Console.SetCursorPosition(0, 0);
 
                     // update all gameobjects in our list
                     foreach (GameObject gameObject in gameObjects)
