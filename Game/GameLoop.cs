@@ -15,14 +15,17 @@ namespace ConsoleRPG.Game
 
 
 
-            TextBox newElement = new(display, "from here on out, you're big boss.", 5, 3, 0, 33, 12, '█', ' ', Anchor.TopLeft); // TEST ELEMENT EXAMPLE
+            TextBox newElement = new(display, "no! that is not solid snake!", 5, 12, 6, 20, 12, '█', ' ', Anchor.TopLeft); // TEST ELEMENT EXAMPLE
 
-            string testimage = "▄▄▄         ▄▄▄\r\n█ ██ ▄█▀█▄ ██ █\r\n█  █ █   █ █  █\r\n█  ▀██▄ ▄██▀  █\r\n▀█░░░░░░░░░░░█▀\r\n █░░░░░░░░░░░█\r\n ▀██░░░░░░░██▀\r\n   ▄█▓▓▓▓▓█▄\r\n  ▄█▓▓▓▓▓▓▓█▄\r\n  █▓▓█████▓▓█\r\n █▓▓█▀   ▀█▓▓█\r\n █▓█       █▓█\r\n ▀█         █▀";
+            string testimage = "▄▄▄¶¶¶¶¶¶¶¶¶▄▄▄\r\n█¶██¶▄█▀█▄¶██¶█\r\n█¶¶█¶█¶¶¶█¶█¶¶█\r\n█¶¶▀██▄¶▄██▀¶¶█\r\n▀█░░░░░░░░░░░█▀\r\n¶█░░░░░░░░░░░█\r\n¶▀██░░░░░░░██▀\r\n¶¶¶▄█▓▓▓▓▓█▄\r\n¶¶▄█▓▓▓▓▓▓▓█▄\r\n¶¶█▓▓█████▓▓█\r\n¶█▓▓█▀¶¶¶▀█▓▓█\r\n¶█▓█¶¶¶¶¶¶¶█▓█\r\n¶▀█¶¶¶¶¶¶¶¶¶█▀";
 
             Image newImage = new(display, testimage, 4, 0, 0, Anchor.Center);
 
+            Meter newMeter = new(display, 4, 10, 30, 24, 0, 1, Anchor.Top);
+
             display.Add(newElement);
             display.Add(newImage);
+            display.Add(newMeter);
 
 
 

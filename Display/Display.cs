@@ -5,7 +5,7 @@ namespace ConsoleRPG.Display
 {
     public class Display(int width, int height)
     {
-        public char Empty = '#'; // ¶
+        public char Empty = '¶'; // ¶
         public int Width = width;
         public int Height = height; // swap out the height/width below for the variables rather than parameters somehow
         public DisplayPixel[,] buffer = new DisplayPixel[height, width]; // buffer where we composite the elements together
@@ -32,13 +32,13 @@ namespace ConsoleRPG.Display
                     // get pixel
                     DisplayPixel pixel = buffer[y, x];
 
-                    if (pixel.isEmpty == false) // if not empty
-                    {
-                        renderedFrame.Append(pixel.character); // writes character to console
-                    }
-                    else // if empty
+                    if (pixel.character == Empty) // if empty
                     {
                         renderedFrame.Append(' '); // writes empty space (not using empty-representative symbol here because we're directly writing characters to the buffer)
+                    }
+                    else // if not empty
+                    {
+                        renderedFrame.Append(pixel.character); // writes character to console
                     }
                 }
 
@@ -66,7 +66,7 @@ namespace ConsoleRPG.Display
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    buffer[y, x].isEmpty = true; // set every initial pixel to empty since arrays dont want to use default values from the constructor
+                    buffer[y, x] = new DisplayPixel(Empty, 0);
                 }
             }
         }
@@ -77,13 +77,13 @@ namespace ConsoleRPG.Display
             int padding = fullLength - inputString.Length;
             int leftPadding = padding / 2 + inputString.Length;
             string output = inputString.PadLeft(leftPadding, character);
-            output = output.PadRight(fullLength);
+            output = output.PadRight(fullLength, character);
             return output;
         }
 
 
 
-        public string[] PadUp(string[] inputStringRows, int fullHeight, char character) // REWRITE!
+        public string[] PadUp(string[] inputStringRows, int fullHeight, char character) // 
         {
             int rowLength = inputStringRows[0].Length;
             int rowsNeeded = fullHeight - inputStringRows.Length;
@@ -93,7 +93,7 @@ namespace ConsoleRPG.Display
             return Enumerable.Repeat(emptyRow, rowsNeeded).Concat(inputStringRows).ToArray();
         }
 
-        public string[] PadDown(string[] inputStringRows, int fullHeight, char character) // REWRITE!
+        public string[] PadDown(string[] inputStringRows, int fullHeight, char character) // 
         {
             int rowLength = inputStringRows[0].Length;
             int rowsNeeded = fullHeight - inputStringRows.Length;
@@ -103,7 +103,7 @@ namespace ConsoleRPG.Display
             return inputStringRows.Concat(Enumerable.Repeat(emptyRow, rowsNeeded)).ToArray();
         }
 
-        public string[] PadCenter_v(string[] inputStringRows, int fullHeight, char character) // REWRITE!
+        public string[] PadCenter_v(string[] inputStringRows, int fullHeight, char character) // 
         {
             int rowsNeeded = fullHeight - inputStringRows.Length;
 
@@ -134,10 +134,9 @@ namespace ConsoleRPG.Display
     }
 
     // a structure to store data for indivdual pixels when drawing to the buffer
-    public struct DisplayPixel(char character = '#', int zIndex = 0, bool isEmpty = true)
+    public struct DisplayPixel(char character = '¶', int zIndex = 0)
     {
         public char character = character;
         public int zIndex = zIndex;
-        public bool isEmpty = isEmpty;
     }
 }

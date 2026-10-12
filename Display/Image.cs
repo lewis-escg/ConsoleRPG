@@ -2,7 +2,7 @@
 
 namespace ConsoleRPG.Display
 {
-    class Image(Display display, string content, int zIndex, int xPos, int yPos, Anchor anchor) : DisplayElement(ConvertToDisplayPixels(display, FormatContents(display.Height, content), anchor, zIndex), zIndex, xPos, yPos, anchor)
+    class Image(Display display, string content, int zIndex, int xPos, int yPos, Anchor anchor) : DisplayElement(ConvertToDisplayPixels(display, FormatContents(display.Height, content), anchor, xPos, yPos, zIndex), zIndex, xPos, yPos, anchor)
     {
 
         // considering getting rid of foreground/background colours for simplicity (cant have coloured strings so there's no colour data in the first place)
@@ -15,10 +15,8 @@ namespace ConsoleRPG.Display
 
         }
 
-        private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string[] elementContentRows, Anchor anchor, int zIndex) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
+        private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string[] elementContentRows, Anchor anchor, int xPos, int yPos, int zIndex) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
         {
-
-            // !!!!!!!!! REWRITE TO USE SCALE PARAMS INSTEAD OF FULL DISPLAY SIZE !!!!!!!!!!!!!!!!!!!!!
 
             // cut off extra rows if too many to display
             if (elementContentRows.Length > display.Height)
@@ -44,7 +42,7 @@ namespace ConsoleRPG.Display
                 if (anchor == Anchor.Center || anchor == Anchor.Top || anchor == Anchor.Bottom)
                 {
                     int leftPadding = (display.Width - imageWidth) / 2;
-                    elementContentRows[i] = elementContentRows[i].PadLeft(imageWidth + leftPadding).PadRight(display.Width, display.Empty);
+                    elementContentRows[i] = elementContentRows[i].PadLeft(imageWidth + leftPadding, display.Empty).PadRight(display.Width, display.Empty);
                 }
                 else if (anchor == Anchor.Left || anchor == Anchor.TopLeft || anchor == Anchor.BottomLeft)
                 {
@@ -82,8 +80,20 @@ namespace ConsoleRPG.Display
                 // for each pixel in the row
                 for (int x = 0; x < display.Width; x++)
                 {
-                    // add the row of characters to the output array
-                    output[y, x] = CharacterToDisplayPixel(charArray[x], zIndex);
+
+                    int xTarget = x + xPos;
+                    int yTarget = y + yPos;
+
+                    // ignore characters outside the display
+                    if (xTarget >= 0 && xTarget < display.Width && yTarget >= 0 && yTarget < display.Height)
+                    {
+                        // make sure character isnt the empty character (avoid padding issues)
+                        if (charArray[x] != display.Empty)
+                        {
+                            // add the row of characters to the output array
+                            output[yTarget, xTarget] = CharacterToDisplayPixel(display, charArray[x], zIndex);
+                        }
+                    }
                 }
             }
 

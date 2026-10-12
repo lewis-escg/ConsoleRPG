@@ -31,7 +31,7 @@ namespace ConsoleRPG.Display
                     DisplayPixel currentPixel = display.buffer[y, x]; // get the current pixel in the buffer
                     DisplayPixel newPixel = content[y, x]; // get the new pixel
 
-                    if (!newPixel.isEmpty && ((newPixel.zIndex >= currentPixel.zIndex) || currentPixel.isEmpty == true)) // compare the pixels by zIndex, ensuring that the current pixel isn't empty or the existing pixel is empty.
+                    if (newPixel.character != display.Empty && (newPixel.zIndex > currentPixel.zIndex)) // compare the pixels by zIndex, ensuring that the current pixel isn't empty or the existing pixel is empty.
                     {
                         display.buffer[y, x] = newPixel; // overwrite the pixel
                     }
@@ -40,21 +40,12 @@ namespace ConsoleRPG.Display
 
         }
 
-        public static DisplayPixel CharacterToDisplayPixel(char character, int zIndex)
+        public static DisplayPixel CharacterToDisplayPixel(Display display, char character, int zIndex)
         {
             DisplayPixel result = new();
 
             result.character = character;
             result.zIndex = zIndex;
-
-            if (character == '¶')
-            {
-                result.isEmpty = true;
-            }
-            else
-            {
-                result.isEmpty = false;
-            }
 
             return result;
         }

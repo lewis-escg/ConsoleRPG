@@ -123,7 +123,7 @@ namespace ConsoleRPG.Display
                         if (charArray[x] != display.Empty)
                         {
                             // add the row of characters to the output array
-                            output[yTarget, xTarget] = CharacterToDisplayPixel(charArray[x], zIndex);
+                            output[yTarget, xTarget] = CharacterToDisplayPixel(display, charArray[x], zIndex);
                         }
                     }
                 }
