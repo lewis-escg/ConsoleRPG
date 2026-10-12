@@ -7,8 +7,8 @@ namespace ConsoleRPG.Game
         public static void Main(string[] args)
         {
             // keep these dimensions above 4 ish so that there's enough space for everything to be displayed (text boxes, any other formatting that would crash without enough space)
-            const int DISPLAY_WIDTH = 60;
-            const int DISPLAY_HEIGHT = 24;
+            const int DISPLAY_WIDTH = 120;
+            const int DISPLAY_HEIGHT = 29;
 
             Console.CursorVisible = false; // hide the cursor (can be seen whizzing around when frames are drawn)
 

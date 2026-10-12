@@ -1,10 +1,12 @@
 ﻿using System;
 
-namespace ConsoleRPG.Game
+namespace ConsoleRPG.Classes
 {
-    public class GameObject(string name)
+    public class Player(string name)
     {
         public string Name = name;
+        public int Altidude = 0;
+
 
         public void Update()
         {

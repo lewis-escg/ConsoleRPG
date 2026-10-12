@@ -12,7 +12,6 @@ namespace ConsoleRPG.Display
         {
             char fillChar = '█';
             char emptyChar = '░';
-            char splitChar = ' ';
 
             StringBuilder sb = new();
             decimal fraction = 0;
@@ -27,12 +26,6 @@ namespace ConsoleRPG.Display
                 else
                 {
                     sb.Append(emptyChar);
-                }
-                iterationCounter += 1;
-                if (iterationCounter >= Math.Floor(Convert.ToDecimal(maxLength) / Convert.ToDecimal(maxValue)))
-                {
-                    sb.Append(splitChar);
-                    iterationCounter = 0;
                 }
             }
             string[] rows = { Convert.ToString(sb) };
