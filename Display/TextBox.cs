@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleRPG.Display
 {
@@ -56,8 +52,6 @@ namespace ConsoleRPG.Display
 
         private static DisplayPixel[,] ConvertToDisplayPixels(Display display, string[] elementContentRows, Anchor anchor, int xPos, int yPos, int xScale, int yScale, int zIndex, char border, char fill) // automatic method to convert the element contents to a DisplayPixel grid and sent it to the base class to be drawn
         {
-
-            // !!!!!!!!! REWRITE TO USE SCALE PARAMS INSTEAD OF FULL DISPLAY SIZE !!!!!!!!!!!!!!!!!!!!!
 
             // cut off extra rows if too many to display
             if (elementContentRows.Length > display.Height)

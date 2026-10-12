@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ConsoleRPG.Display;
 
 namespace ConsoleRPG.Game
