@@ -15,7 +15,7 @@ namespace ConsoleRPG.Display
 
             StringBuilder sb = new();
             decimal fraction = 0;
-            fraction = Convert.ToDecimal(1) / (Convert.ToDecimal(maxValue) / Convert.ToDecimal(value));
+            try { fraction = Convert.ToDecimal(1) / (Convert.ToDecimal(maxValue) / Convert.ToDecimal(value)); } catch { }
             int iterationCounter = 0;
             for (int i = 1; i <= maxLength; i++)
             {

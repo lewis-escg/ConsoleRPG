@@ -46,6 +46,7 @@ namespace ConsoleRPG.Display
             }
             Console.Write(renderedFrame); // output frame to console
             Console.Write("\x1b[J"); // clear anything from cursor pos to end of console (prevents some visual bugs after window size is set smaller than the game can display)
+            ClearElements();
         }
 
         public void Add(DisplayElement element)
@@ -56,6 +57,11 @@ namespace ConsoleRPG.Display
         public void Remove(DisplayElement element)
         {
             elements.Remove(element);
+        }
+
+        public void ClearElements()
+        {
+            elements.Clear();
         }
 
         public void ClearBuffer()

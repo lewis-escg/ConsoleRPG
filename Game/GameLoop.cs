@@ -15,22 +15,12 @@ namespace ConsoleRPG.Game
         {
             ASCIIArt SpriteTable = new();
 
-            Meter healthMeter = new(display, 9, 10, 39, 998, 0, 1, Anchor.Top);
-            Image hudOverlay = new(display, SpriteTable.Get("HUD Overlay"), 995, -3, 0, Anchor.Top);
-            Text healthText = new(display, "9/10", 7, 997, -1, 3, Anchor.Top);
-            Text altitudeText = new(display, "100", 3, 997, -25, 1, Anchor.Top);
 
-            Image background = new(display, SpriteTable.Get("Background Forward 1"), 1, 0, 0, Anchor.Center);
-            Image hand = new(display, SpriteTable.Get("Hand 1"), 997, 0, 0, Anchor.BottomRight);
+            Player player = new(display, "Player");
+            gameObjects.Add(player);
 
-            display.Add(healthMeter);
-            display.Add(hudOverlay);
-            display.Add(healthText);
-            display.Add(altitudeText);
-
-            display.Add(background);
-            display.Add(hand);
-
+            Location TowerExteriorLocation = new(display, "Tower Exterior");
+            gameObjects.Add(TowerExteriorLocation);
 
 
             if (running == true) return; // don't let us call begin if the loop is already running
@@ -43,7 +33,7 @@ namespace ConsoleRPG.Game
                     // update all gameobjects in our list
                     foreach (GameObject gameObject in gameObjects)
                     {
-                        gameObject.Update();
+                        gameObject.Update(display);
                     }
                     
                     display.Draw(); // render everything and output it
