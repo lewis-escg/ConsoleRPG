@@ -13,7 +13,7 @@ namespace ConsoleRPG.Game
             Console.CursorVisible = false; // hide the cursor (can be seen whizzing around when frames are drawn)
 
             ConsoleRPG.Display.Display newDisplay = new(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-            GameLoop gameLoop = new(1, newDisplay);
+            GameLoop gameLoop = new(5, newDisplay);
             gameLoop.Begin();
         }
     }

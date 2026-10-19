@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ConsoleRPG.Classes
 {
-    class ASCIIArt
+    public class ASCIIArt
     {
         private Dictionary<string, string> SpriteTable = new();
 

@@ -12,12 +12,13 @@ namespace ConsoleRPG.Classes
     // also make input system so we can finally navigate/look around and stuff
     // enemies can probably just stay at their initial positions and attack the player
 
-    public class Location(Display.Display display, string name) : GameObject(name)
+    public class Location(string name) : GameObject(name)
     {
         public string Name = name;
         public string Background = $"{name} 1";
+        public 
 
-        private ASCIIArt SpriteTable = new(); // lets us fetch sprites
+        ASCIIArt SpriteTable = new(); // lets us fetch sprites
 
         public override void Update(Display.Display display)
         {

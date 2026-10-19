@@ -16,10 +16,10 @@ namespace ConsoleRPG.Game
             ASCIIArt SpriteTable = new();
 
 
-            Player player = new(display, "Player");
+            Player player = new();
             gameObjects.Add(player);
 
-            Location TowerExteriorLocation = new(display, "Tower Exterior");
+            Location TowerExteriorLocation = new("Tower Exterior");
             gameObjects.Add(TowerExteriorLocation);
 
 
