@@ -19,7 +19,7 @@ namespace ConsoleRPG.Display
             {
                 if ((i == 0) || (i == linesNumber - 1)) // if the current line is the first or last line (border)
                 {
-                    string newLine = ("".PadLeft((widthNumber), border)); // fill the line with border characters
+                    string newLine = ("".PadLeft(widthNumber, border)); // fill the line with border characters
                     rows[i] = newLine; // add to final array
                 }
                 else

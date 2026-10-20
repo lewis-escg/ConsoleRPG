@@ -17,6 +17,10 @@ namespace ConsoleRPG.Classes
 
         private ASCIIArt SpriteTable = new(); // lets us fetch sprites
 
+
+        string textBoxText = "";
+        string textBoxFinalText = "hello this is a dialog box and it is filling in a character every frame. it doesnt have word wrapping. abcdefghijklmnopqrstuvwxyz. im stuck/cant be bothered to add a locations (rooms) system or input system so im wasting time doing this instead.";
+
         public override void Update(Display.Display display) // called every frame
         {
             // create all our elements
@@ -27,6 +31,13 @@ namespace ConsoleRPG.Classes
             Text currencyText = new(display, $"{Currency}", 3, 997, 24, 1, Anchor.Top);
             Image hand = new(display, SpriteTable.Get(handSprite), 997, 0, 0, Anchor.BottomRight);
 
+            if (textBoxFinalText.Length > 0)
+            {
+                textBoxText = $"{textBoxText}{textBoxFinalText[0]}";
+                textBoxFinalText = textBoxFinalText.Substring(1);
+            }
+            TextBox dialogBox = new(display, textBoxText, 998, 0, 7, 50, 12, '█', ' ', Anchor.Center);
+
             // add them to the display's list of things to be drawn
             display.Add(hudOverlay);
             display.Add(healthMeter);
@@ -34,6 +45,7 @@ namespace ConsoleRPG.Classes
             display.Add(altitudeText);
             display.Add(currencyText);
             display.Add(hand);
+            display.Add(dialogBox);
 
             if (Health > 0)
             {

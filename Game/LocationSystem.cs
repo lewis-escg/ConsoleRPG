@@ -13,8 +13,8 @@ namespace ConsoleRPG.Game
         public List<Location> Locations = new();
 
         Location newLocation = new("Tower Exterior");
-        Locations.Append(NewLocation);
+        //Locations.Append(NewLocation);
 
-        public Location CurrentLocation = Locations[0];
+        //public Location CurrentLocation = Locations[0];
     }
 }
