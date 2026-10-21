@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 namespace ConsoleRPG.Classes
 {
 
-    // TO-DO: make location system! make locations myself. 
+    // TO-DO: make location system! make locations manually (not procedural). 
     // also make input system so we can finally navigate/look around and stuff
-    // enemies can probably just stay at their initial positions and attack the player
 
     public class Location(string name) : GameObject(name)
     {
