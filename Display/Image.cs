@@ -5,8 +5,6 @@ namespace ConsoleRPG.Display
     class Image(Display display, string content, int zIndex, int xPos, int yPos, Anchor anchor) : DisplayElement(ConvertToDisplayPixels(display, FormatContents(display.Height, content), anchor, xPos, yPos, zIndex), zIndex, xPos, yPos, anchor)
     {
 
-        // considering getting rid of foreground/background colours for simplicity (cant have coloured strings so there's no colour data in the first place)
-
         private static string[] FormatContents(int linesNumber, string content)
         {
 

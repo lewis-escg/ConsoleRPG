@@ -6,8 +6,6 @@ namespace ConsoleRPG.Display
     class Meter(Display display, int value, int maxValue, int maxLength, int zIndex, int xPos, int yPos, Anchor anchor) : DisplayElement(ConvertToDisplayPixels(display, FormatContents(value, maxValue, maxLength), anchor, xPos, yPos, zIndex), zIndex, xPos, yPos, anchor)
     {
 
-        // considering getting rid of foreground/background colours for simplicity (cant have coloured strings so there's no colour data in the first place)
-
         private static string[] FormatContents(int value, int maxValue, int maxLength)
         {
             char fillChar = '█';
@@ -16,7 +14,6 @@ namespace ConsoleRPG.Display
             StringBuilder sb = new();
             decimal fraction = 0;
             try { fraction = Convert.ToDecimal(1) / (Convert.ToDecimal(maxValue) / Convert.ToDecimal(value)); } catch { }
-            int iterationCounter = 0;
             for (int i = 1; i <= maxLength; i++)
             {
                 if (i <= Math.Floor(fraction* maxLength))
