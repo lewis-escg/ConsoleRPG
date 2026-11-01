@@ -19,8 +19,8 @@ namespace ConsoleRPG.Game
             Player player = new();
             gameObjects.Add(player);
 
-            Location TowerExteriorLocation = new("Tower Exterior");
-            gameObjects.Add(TowerExteriorLocation);
+            LocationSystem locationSystem = new(display);
+            locationSystem.Initialize();
 
 
             if (running == true) return; // don't let us call begin if the loop is already running
@@ -29,6 +29,8 @@ namespace ConsoleRPG.Game
             {
                 if (!paused) // only run code if the loop isnt paused, otherwise keep waiting until unpaused
                 {
+
+                    locationSystem.Update(); // update the current location
 
                     // update all gameobjects in our list
                     foreach (GameObject gameObject in gameObjects)
