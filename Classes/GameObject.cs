@@ -6,7 +6,7 @@ namespace ConsoleRPG.Classes
     {
         public string Name = name;
 
-        public virtual void Update(Display.Display display)
+        public virtual void Update(Display.Display display, ConsoleKeyInfo? userInput)
         {
 
         }

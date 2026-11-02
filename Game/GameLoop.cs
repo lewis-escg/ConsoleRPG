@@ -15,13 +15,13 @@ namespace ConsoleRPG.Game
         {
             ASCIIArt SpriteTable = new();
 
-
             Player player = new();
             gameObjects.Add(player);
 
             LocationSystem locationSystem = new(display);
             locationSystem.Initialize();
 
+            InputSystem inputSystem = new();
 
             if (running == true) return; // don't let us call begin if the loop is already running
             running = true;
@@ -29,18 +29,18 @@ namespace ConsoleRPG.Game
             {
                 if (!paused) // only run code if the loop isnt paused, otherwise keep waiting until unpaused
                 {
-
-                    locationSystem.Update(); // update the current location
+                    ConsoleKeyInfo? userInput = inputSystem.Update(); // update the input system (in case any input was received)
+                    locationSystem.Update(userInput); // update the current location
 
                     // update all gameobjects in our list
                     foreach (GameObject gameObject in gameObjects)
                     {
-                        gameObject.Update(display);
+                        gameObject.Update(display, userInput);
                     }
                     
                     display.Draw(); // render everything and output it
                 }
-                System.Threading.Thread.Sleep(1000 / loopsPerSecond); // wait until next loop
+                Thread.Sleep(1000 / loopsPerSecond); // wait until next loop
             }
         }
 

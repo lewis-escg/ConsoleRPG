@@ -21,7 +21,7 @@ namespace ConsoleRPG.Classes
         string textBoxText = "";
         string textBoxFinalText = "hello this is a dialog box and it is filling in a character every frame. it doesnt have word wrapping. abcdefghijklmnopqrstuvwxyz. im stuck/cant be bothered to add a locations (rooms) system or input system so im wasting time doing this instead.";
 
-        public override void Update(Display.Display display) // called every frame
+        public override void Update(Display.Display display, ConsoleKeyInfo? userInput) // called every frame
         {
             // create all our elements
             Image hudOverlay = new(display, SpriteTable.Get("HUD Overlay"), 995, 0, 0, Anchor.Top);
@@ -47,7 +47,7 @@ namespace ConsoleRPG.Classes
             display.Add(hand);
             display.Add(dialogBox);
 
-            if (Health > 0)
+            if (Health > 0 && userInput != null && userInput.Value.Key == ConsoleKey.Spacebar)
             {
                 Health -= 1;
             }

@@ -28,9 +28,9 @@ namespace ConsoleRPG.Game
             SetCurrentLocation(0);
         }
 
-        public void Update()
+        public void Update(ConsoleKeyInfo? userInput)
         {
-            CurrentLocation.Update(display);
+            CurrentLocation.Update(display, userInput);
         }
 
         public Location getCurrentLocation()

@@ -19,7 +19,7 @@ namespace ConsoleRPG.Classes
 
         ASCIIArt SpriteTable = new(); // lets us fetch sprites
 
-        public override void Update(Display.Display display)
+        public override void Update(Display.Display display, ConsoleKeyInfo? userInput)
         {
             Image background = new(display, SpriteTable.Get(Background), 1, 0, 0, Anchor.Center);
             display.Add(background);
