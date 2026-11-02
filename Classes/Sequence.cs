@@ -6,7 +6,7 @@ namespace ConsoleRPG.Classes
     {
         ASCIIArt SpriteTable = new();
 
-        public override void Update(Display.Display display, ConsoleKeyInfo? userInput)
+        public override void Update(Display.Display display, ConsoleKeyInfo? userInput) // need a way to set up a sequence easily, and to optionally block input during them.
         {
             
         }
