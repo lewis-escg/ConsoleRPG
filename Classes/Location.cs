@@ -1,9 +1,5 @@
 ﻿using ConsoleRPG.Display;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleRPG.Classes
 {
@@ -15,7 +11,6 @@ namespace ConsoleRPG.Classes
     {
         public string Name = name;
         public string Background = $"{name} 1";
-        public 
 
         ASCIIArt SpriteTable = new(); // lets us fetch sprites
 
