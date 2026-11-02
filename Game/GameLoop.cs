@@ -16,7 +16,6 @@ namespace ConsoleRPG.Game
             ASCIIArt SpriteTable = new();
 
             Player player = new();
-            gameObjects.Add(player);
 
             LocationSystem locationSystem = new(display);
             locationSystem.Initialize();
@@ -31,6 +30,7 @@ namespace ConsoleRPG.Game
                 {
                     ConsoleKeyInfo? userInput = inputSystem.Update(); // update the input system (in case any input was received)
                     locationSystem.Update(userInput); // update the current location
+                    player.Update(display, userInput, locationSystem.Altitude, 0); // update player
 
                     // update all gameobjects in our list
                     foreach (GameObject gameObject in gameObjects)

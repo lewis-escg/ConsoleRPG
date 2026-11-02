@@ -21,8 +21,13 @@ namespace ConsoleRPG.Classes
         string textBoxText = "";
         string textBoxFinalText = "hello this is a dialog box and it is filling in a character every frame. it doesnt have word wrapping. abcdefghijklmnopqrstuvwxyz. im stuck/cant be bothered to add a locations (rooms) system or input system so im wasting time doing this instead.";
 
-        public override void Update(Display.Display display, ConsoleKeyInfo? userInput) // called every frame
+        public void Update(Display.Display display, ConsoleKeyInfo? userInput, int altitude, int currency) // called every frame
+        //    ^  i got rid of the override keyword cause otherwise it gave me an error cause the gameobject class doesnt have these extra parameters
         {
+            // update values
+            Altidude = altitude;
+            Currency = currency;
+
             // create all our elements
             Image hudOverlay = new(display, SpriteTable.Get("HUD Overlay"), 995, 0, 0, Anchor.Top);
             Meter healthMeter = new(display, Health, MaxHealth, 39, 998, 0, 1, Anchor.Top);
