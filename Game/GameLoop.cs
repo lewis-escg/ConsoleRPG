@@ -29,13 +29,13 @@ namespace ConsoleRPG.Game
                 if (!paused) // only run code if the loop isnt paused, otherwise keep waiting until unpaused
                 {
                     ConsoleKeyInfo? userInput = inputSystem.Update(); // update the input system (in case any input was received)
-                    locationSystem.Update(userInput); // update the current location
-                    player.Update(display, userInput, locationSystem.Altitude, 0); // update player
+                    locationSystem.Update(userInput, loopsPerSecond); // update the current location
+                    player.Update(display, userInput, loopsPerSecond, locationSystem.Altitude, 0); // update player
 
                     // update all gameobjects in our list
                     foreach (GameObject gameObject in gameObjects)
                     {
-                        gameObject.Update(display, userInput);
+                        gameObject.Update(display, userInput, loopsPerSecond);
                     }
                     
                     display.Draw(); // render everything and output it

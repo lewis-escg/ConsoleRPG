@@ -6,9 +6,16 @@ namespace ConsoleRPG.Classes
     {
         ASCIIArt SpriteTable = new();
 
-        public override void Update(Display.Display display, ConsoleKeyInfo? userInput) // need a way to set up a sequence easily, and to optionally block input during them.
+        int frameCounter = 0;
+
+        public override void Update(Display.Display display, ConsoleKeyInfo? userInput, int fps) // need a way to set up a sequence easily, and to optionally block input during them.
         {
-            
+            frameCounter++;
+            if (frameCounter >= (fps * 2));
+            {
+                frameCounter = 0;
+                // waited 2 seconds!
+            }
         }
     }
 }

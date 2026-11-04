@@ -14,7 +14,7 @@ namespace ConsoleRPG.Classes
 
         ASCIIArt SpriteTable = new(); // lets us fetch sprites
 
-        public override void Update(Display.Display display, ConsoleKeyInfo? userInput)
+        public override void Update(Display.Display display, ConsoleKeyInfo? userInput, int fps)
         {
             if (userInput != null && userInput.Value.Key == ConsoleKey.A)
             {

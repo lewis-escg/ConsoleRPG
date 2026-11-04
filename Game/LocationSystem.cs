@@ -37,9 +37,9 @@ namespace ConsoleRPG.Game
         }
 
 
-        public void Update(ConsoleKeyInfo? userInput)
+        public void Update(ConsoleKeyInfo? userInput, int fps)
         {
-            CurrentLocation.Update(display, userInput);
+            CurrentLocation.Update(display, userInput, fps);
             direction = CurrentLocation.Direction;
             Altitude = INITIAL_ALTITUDE + (currentLocationIndex * 5);
         }
